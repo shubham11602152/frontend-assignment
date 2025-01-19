@@ -6,9 +6,10 @@ import GlobalStyles from "./components/common/GlobalStyles";
 const App = () => {
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-  const RECORDS_PER_PAGE = 10;
+  const RECORDS_PER_PAGE = 5;
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -18,6 +19,7 @@ const App = () => {
         const data = await response.json();
         setProjects(data);
       } catch (error) {
+        setHasError(true);
         console.error("Error fetching data:", error);
       } finally {
         setIsLoading(false);
@@ -43,21 +45,17 @@ const App = () => {
         <h1 style={{ textAlign: "center", margin: "20px 0" }}>
           Frontend Assignment
         </h1>
-        {isLoading ? (
-          <p style={{ textAlign: "center" }}>Loading...</p>
-        ) : (
-          <>
-            <Table
-              projects={displayedProjects}
-              totalRecords={RECORDS_PER_PAGE}
-            />
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </>
-        )}
+        <Table
+          projects={displayedProjects}
+          totalRecords={RECORDS_PER_PAGE}
+          isLoading={isLoading}
+          hasError={hasError}
+        />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </>
   );

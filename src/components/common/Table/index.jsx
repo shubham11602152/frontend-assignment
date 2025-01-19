@@ -1,8 +1,7 @@
 import React from "react";
-import { EmptyRow } from "./style";
-// import PropTypes from "prop-types";
+import { EmptyRow, Message } from "./style";
 
-const TableRow = ({ index, percentageFunded, amountPledged, renderFooter }) => (
+const TableRow = ({ index, percentageFunded, amountPledged }) => (
   <tr>
     <td>{index}</td>
     <td>{percentageFunded}%</td>
@@ -10,7 +9,7 @@ const TableRow = ({ index, percentageFunded, amountPledged, renderFooter }) => (
   </tr>
 );
 
-export default function Table({ projects, totalRecords }) {
+export default function Table({ projects, totalRecords, hasError, isLoading }) {
   const emptyRows = totalRecords - projects.length;
   return (
     <table>
@@ -22,7 +21,9 @@ export default function Table({ projects, totalRecords }) {
         </tr>
       </thead>
       <tbody>
-        {projects.map((project, index) => (
+        {isLoading && <Message>Loading...</Message>}
+        {hasError && <Message>Error in fetching data.</Message>}
+        {projects.map((project) => (
           <TableRow
             key={project["s.no"]}
             index={project["s.no"] + 1}
@@ -39,5 +40,3 @@ export default function Table({ projects, totalRecords }) {
     </table>
   );
 }
-
-// Table.propTypes = {};

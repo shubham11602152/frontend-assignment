@@ -9,6 +9,7 @@ const GlobalStyles = createGlobalStyle`
     color: #333;
   }
   table {
+    position: relative;
     width: 80%;
     margin: 20px auto;
     border-collapse: collapse;
